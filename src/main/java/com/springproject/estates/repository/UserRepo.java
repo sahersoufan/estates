@@ -1,6 +1,6 @@
-package repository;
+package com.springproject.estates.repository;
 
-import domain.User;
+import com.springproject.estates.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepo extends JpaRepository<User, Long> {
