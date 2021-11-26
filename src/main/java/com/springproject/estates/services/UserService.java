@@ -1,7 +1,7 @@
-package services;
+package com.springproject.estates.services;
 
-import domain.Role;
-import domain.User;
+import com.springproject.estates.domain.Role;
+import com.springproject.estates.domain.User;
 
 import java.util.List;
 

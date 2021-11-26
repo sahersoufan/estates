@@ -1,13 +1,13 @@
-package services;
+package com.springproject.estates.services;
 
 
-import domain.Role;
-import domain.User;
+import com.springproject.estates.domain.Role;
+import com.springproject.estates.domain.User;
+import com.springproject.estates.repository.RoleRepo;
+import com.springproject.estates.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import repository.RoleRepo;
-import repository.UserRepo;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -21,16 +21,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
+        log.info("saving new user {} to the database", user.getUsername());
         return userRepo.save(user);
     }
 
     @Override
     public Role saveRole(Role role) {
+        log.info("saving new Role {} to the database", role.getName());
+
         return roleRepo.save(role);
     }
 
     @Override
     public void addRoleToUser(String username, String RoleName) {
+        log.info("adding Role {} to user {}", RoleName, username);
 
         User user = userRepo.findByUsername((username));
         Role role = roleRepo.findByName(RoleName);
@@ -39,11 +43,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(String username) {
+        log.info("fetching user {}", username);
+
         return userRepo.findByUsername(username);
     }
 
     @Override
     public List<User> getUsers() {
+        log.info("fetching all users");
         return userRepo.findAll();
     }
 }
