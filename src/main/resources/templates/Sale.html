@@ -21,7 +21,7 @@
 
 
 
-            <form   th:action="@{/update/estate/sell/{id}(id=${estate.getId()})}"  method="post">
+            <form   th:action="@{/update/estate/sell/{id}/{version}(id=${estate.getId()},version=${estate.getVersion()})}"  method="post">
 
                 <div class="modal-body pd-20">
                     <div class="form-group">

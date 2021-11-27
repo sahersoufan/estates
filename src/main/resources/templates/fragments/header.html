@@ -54,7 +54,7 @@
             </a><!-- sl-menu-link -->
             <ul class="sl-menu-sub nav flex-column">
                 <li class="nav-item"><a href="/estate" class="nav-link">estate</a></li>
-                <li class="nav-item"><a href="/sale" class="nav-link">sale</a></li>
+                <li class="nav-item"><a th:href="@{/sale/{message}/{alert_type}}" class="nav-link">sale</a></li>
 
             </ul>
 
@@ -396,8 +396,6 @@
     <script src="../static/js/starlight.js " th:src="@{/js/starlight.js}"></script>
     <script src="../static/js/ResizeSensor.js " th:src="@{/js/ResizeSensor.js}"></script>
     <script src="../static/js/dashboard.js " th:src="@{/js/dashboard.js }"></script>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 
 

@@ -28,6 +28,7 @@ public class EstatesController {
 
         model.addAttribute("estates",estateServices.getAllEstate());
         model.addAttribute("numbershares",parametersServices.findbyname("number_shares").getvalue());
+
         return "estate";
     }
 
@@ -64,9 +65,11 @@ public class EstatesController {
     }
 
 
-    @GetMapping(value = "/sale")
-    public String viewSalesPage(Model model){
+    @GetMapping(value = "/sale/{message}/{alert_type}")
+    public String viewSalesPage(Model model,@PathVariable("message") String message,@PathVariable("alert_type") String alert_type){
         model.addAttribute("estate",estateServices.EstateIsntSale());
+        model.addAttribute("message",message);
+        model.addAttribute("alert_type",alert_type);
         return "SaleEstate";
     }
 
@@ -78,17 +81,26 @@ public class EstatesController {
         return "Sale";
     }
 
-    @RequestMapping(value = "/update/estate/sell/{id}", method= RequestMethod.POST)
-    public String UpdateSell(@PathVariable("id") Long id,@RequestParam("buyer_name") String name, @RequestParam("sell_price") Long sellprice) {
+    @RequestMapping(value = "/update/estate/sell/{id}/{version}", method= RequestMethod.POST)
+    public String UpdateSale(@PathVariable("id") Long id,@PathVariable("version") Long version, HttpServletRequest request, @RequestParam("sell_price") Long sellprice) {
+
+        String alert_type=null ,message = null;
 
         EstateModel estateModel=estateServices.FindEstate(id);
-        System.out.println(sellprice);
-        estateModel.setSellingPrice(sellprice);
-        System.out.println(name);
-        estateModel.setBuyerName(name);
-        estateModel.setSale(true);
-        estateServices.SaveEstate(estateModel);
-        return "redirect:/sale";
+        if(version == estateModel.getVersion()){
+            estateModel.setSellingPrice(sellprice);
+            estateModel.setBuyerName(request.getParameter("buyer_name"));
+            estateModel.setSale(true);
+            estateServices.SaveEstate(estateModel);
+        }else {
+             message="Sorry , The estate has been sold ";
+             alert_type="error";
+        }
+
+
+
+
+        return "redirect:/sale/"+message+"/"+alert_type;
     }
 
 }

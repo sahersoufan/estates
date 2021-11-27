@@ -38,8 +38,8 @@
                     <tbody>
 
 
-                    <tr th:each="estate: ${estates}">
-                        <td th:text="${estate.getId()}" />
+                    <tr th:each="estate,i: ${estates}">
+                        <td th:text="${i.count}" />
                         <td th:text="${estate.getName()}" />
                         <td th:text="${estate.getPrice()}" />
                         <td th:text="${estate.getNumberShares()}" />
@@ -47,6 +47,7 @@
                             <a th:href="@{/edit/estate/{id}(id=${estate.getId()})}" class="btn btn-sm btn-info">Edit</a>
                             <a th:href="@{/delete/estate/{id}(id=${estate.getId()})}" class="btn btn-sm btn-danger" id="delete">Delete</a>
                         </td>
+
 
                     </tr>
 
@@ -111,6 +112,8 @@
 
 
 </div>
+
+
 </div>
 </body>
 </html>

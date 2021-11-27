@@ -65,6 +65,36 @@
 
 
         </script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script th:inline="javascript">
+
+            /*<![CDATA[*/
+
+
+
+            if([[${message}]]){
+
+            var type =[[${alert_type}]];
+
+            switch(type){
+                case 'info':
+                    toastr.info([[${message}]]);
+                    break;
+                case 'success':
+                    toastr.success([[${message}]]);
+                    break;
+                case 'warning':
+                    toastr.warning([[${message}]]);
+                    break;
+                case 'error':
+                    toastr.error([[${message}]]);
+                    break;
+
+
+            }}
+            /*]]>*/
+        </script>
     </div>
 </div>
 </body>

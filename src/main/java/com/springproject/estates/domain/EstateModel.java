@@ -21,6 +21,18 @@ public class EstateModel {
     Boolean sale;
     @Column(name = "selling_price")
     long SellingPrice;
+    @Version
+    private Long version;
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+
 
     public Boolean getSale() {
         return sale;
