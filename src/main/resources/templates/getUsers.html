@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
+
+</head>
+<body>
+
+</body>
+
+<script>
+
+    window.onload = function () {
+
+        $.ajax({
+            url: "http://localhost:8080/api/users",
+            type: "GET",
+            beforeSend: function(request) {
+                request.setRequestHeader("Authority", "Bearer "+ Cookies.get("access_token"));
+            }            }
+        )
+
+    }
+
+
+</script>
+</html>
