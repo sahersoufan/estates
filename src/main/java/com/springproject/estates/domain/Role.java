@@ -10,12 +10,11 @@ import javax.persistence.*;
 
 import static javax.persistence.GenerationType.AUTO;
 
-@Entity @Table(name = "Role")
+@Entity
 @EnableAutoConfiguration
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Role {
-    @Column @Id @GeneratedValue(strategy = AUTO)
+ @Id @GeneratedValue(strategy = AUTO)
     private Long id;
-    @Column
     private String name;
 }
