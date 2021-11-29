@@ -35,6 +35,6 @@ public class Parameters {
     }
 
     public void setvalue(long value) {
-        value = value;
+        this.value = value;
     }
 }

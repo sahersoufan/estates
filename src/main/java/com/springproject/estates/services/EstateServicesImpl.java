@@ -22,8 +22,8 @@ public class EstateServicesImpl implements EstateServices{
     }
 
     @Override
-    public void SaveEstate(EstateModel estates) {
-        estateRepository.save(estates);
+    public EstateModel SaveEstate(EstateModel estates) {
+       return estateRepository.save(estates);
     }
 
     @Override
@@ -34,7 +34,12 @@ public class EstateServicesImpl implements EstateServices{
     @Override
     public EstateModel FindEstate(long id) {
         Optional<EstateModel> estateModel=estateRepository.findById(id);
-        return estateModel.get();
+        EstateModel estatefind = null;
+       if(estateModel.isEmpty())
+         return estatefind;
+       else
+         estatefind=estateModel.get();
+        return estatefind;
     }
 
     @Override

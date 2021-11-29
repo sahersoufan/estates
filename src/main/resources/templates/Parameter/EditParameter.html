@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+<div class="sl-mainpanel">
+
+
+    <div class="sl-pagebody">
+        <div class="sl-page-title">
+            <h5>Parameter Update</h5>
+
+        </div><!-- sl-page-title -->
+
+        <div class="card pd-20 pd-sm-40">
+
+
+
+            <form   th:action="@{/update/parameter/{id}(id=${parameter.getId()})}"  method="post">
+
+                <div class="modal-body pd-20">
+                    <div class="form-group">
+                        <label >Name</label>
+                        <input type="text" class="form-control" id="name"   name="name" th:value="${parameter.getName()}">
+
+                    </div>
+                    <div class="form-group">
+                        <label >Value</label>
+                        <input type="text" class="form-control" id="value" name="value" th:value="${parameter.getvalue()}">
+
+                    </div>
+
+
+                </div><!-- modal-body -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info pd-x-20">Update</button>
+                </div>
+            </form>
+
+
+
+
+        </div><!-- card -->
+
+
+
+
+    </div><!-- sl-mainpanel -->
+</div>
+
+</body>
+</html>

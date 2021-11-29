@@ -29,7 +29,7 @@ public class EstatesController {
         model.addAttribute("estates",estateServices.getAllEstate());
         model.addAttribute("numbershares",parametersServices.findbyname("number_shares").getvalue());
 
-        return "estate";
+        return "Estate/estate";
     }
 
     @RequestMapping(value = "/add/estate", method= RequestMethod.POST)
@@ -50,7 +50,7 @@ public class EstatesController {
     @GetMapping(value = "/edit/estate/{id}")
     public String EditEstate(@PathVariable("id") Long id,Model model){
         model.addAttribute("estate", estateServices.FindEstate(id));
-        return "EditEstate";
+        return "Estate/EditEstate";
     }
 
     @RequestMapping(value = "/update/estate/{id}", method= RequestMethod.POST)
@@ -70,7 +70,7 @@ public class EstatesController {
         model.addAttribute("estate",estateServices.EstateIsntSale());
         model.addAttribute("message",message);
         model.addAttribute("alert_type",alert_type);
-        return "SaleEstate";
+        return "Estate/SaleEstate";
     }
 
     @RequestMapping(value = "/edit/sale/{id}", method= RequestMethod.GET)
@@ -78,7 +78,7 @@ public class EstatesController {
         long SellingPrice=estateServices.FindEstate(id).getPrice()*parametersServices.findbyname("profit_ratio").getvalue();
         model.addAttribute("SellingPrice",SellingPrice);
         model.addAttribute("estate",estateServices.FindEstate(id));
-        return "Sale";
+        return "Estate/Sale";
     }
 
     @RequestMapping(value = "/update/estate/sell/{id}/{version}", method= RequestMethod.POST)

@@ -20,10 +20,20 @@ public class EstateModel {
     @Column(name = "sale",columnDefinition = "boolean default false")
     Boolean sale;
     @Column(name = "selling_price")
-    long SellingPrice;
+    long sellingPrice;
     @Version
     private Long version;
 
+    public EstateModel(){
+
+    }
+
+    public EstateModel(String Name, long Price, long NumberShares){
+        this.Name=Name;
+        this.Price=Price;
+        this.NumberShares=NumberShares;
+
+    }
     public Long getVersion() {
         return version;
     }
@@ -32,17 +42,12 @@ public class EstateModel {
         this.version = version;
     }
 
-
-
     public Boolean getSale() {
         return sale;
     }
-
     public void setSale(Boolean sale) {
         this.sale = sale;
     }
-
-
 
     public long getId() {
         return Id;
@@ -85,11 +90,11 @@ public class EstateModel {
     }
 
     public long getSellingPrice() {
-        return SellingPrice;
+        return sellingPrice;
     }
 
     public void setSellingPrice(long sellingPrice) {
-        SellingPrice = sellingPrice;
+        this.sellingPrice = sellingPrice;
     }
 
 
