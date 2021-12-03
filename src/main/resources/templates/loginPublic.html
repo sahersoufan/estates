@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Sign In</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha512-aUhL2xOCrpLEuGD5f6tgHbLYEXRpYZ8G5yD+WlFrXrPy2IrWBlu6bih5C9H6qGsgqnU6mgx6KtU8TreHpASprw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<body>
+<div class="container text-center">
+    <div>
+        <h1>Sign In</h1>
+    </div>
+    <form id="form"
+         style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label">username: </label>
+                <div class="col-8">
+                    <input id="username" name="username"  type="text"  class="form-control"
+                           required minlength="2" maxlength="20"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Password: </label>
+                <div class="col-8">
+                    <input type="password" id="password" name="password" class="form-control"
+                           required minlength="0" maxlength="10"/>
+                </div>
+            </div>
+            <div>
+                <button name="submit" type="submit" class="btn btn-primary">Sign In</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+
+
+
+<script>
+
+
+
+    const myForm = document.getElementById('form');
+    myForm.addEventListener('submit',function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const myHeaders = new Headers();
+        myHeaders.append('contentType','application/x-www-form-urlencoded');
+        const myRequest = new Request('http://localhost:8080/login',
+            {method:'POST',
+                headers:myHeaders,
+                body:formData}
+        )
+        fetch(myRequest).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+            $.cookie('access_token', json.access_token, {path:'/'});
+            $.cookie('refresh_token', json.refresh_token, {path:'/'});
+            document.location = 'http://localhost:8080/'
+
+            /*localStorage.setItem('access_token',json.access_token);
+              localStorage.setItem('refresh_token',json.refresh_token);*/
+        }).catch(function (error) {
+            console.error(error);
+
+        })
+
+    });
+
+
+
+</script>
+
+
+</html>
