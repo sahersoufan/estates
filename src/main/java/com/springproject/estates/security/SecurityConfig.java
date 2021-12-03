@@ -43,12 +43,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/login/**","/login", "/api/token/refresh", "/loginPage/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/user/**").hasAnyAuthority("ROLE_USER");
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().anyRequest().authenticated().and().formLogin().loginPage("/loginPage").permitAll();
+        http.authorizeRequests().antMatchers(
+                "/login/**",
+                "/",
+                "/api/token/refresh",
+                "/loginPublic/**",
+                "/admin",
+                "/api/user/save",
+                "/user",
+                "/webjars/**",
+                "/js/**",
+                "/css/**").permitAll();
+        http.authorizeRequests().antMatchers(
+                HttpMethod.GET,"/api/user/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers(
+                "/api/user/save/**",
+                 "/admin/content",
+                "/admin/register").hasAnyAuthority("ROLE_ADMIN");
+
+        http.authorizeRequests().anyRequest().authenticated().and().formLogin().loginPage("/loginPublic").permitAll();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+
+
 /*        http.formLogin().successHandler(new AuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

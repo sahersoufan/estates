@@ -104,6 +104,7 @@ public class UserResource {
         }
     }
 }
+
 @Data
 class RoleToUserForm {
 
