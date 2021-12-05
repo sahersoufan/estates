@@ -1,21 +1,31 @@
 
 
 function checkExpire() {
+    if ($.cookie('access_token') != null){
     const accessToken = $.cookie('access_token');
     const refreshToken = $.cookie('refresh_token');
+
     const date = new Date(0);
     const refreshDate = new Date(0);
+
     const decoded = parseJwt(accessToken);
     const refreshDecoded = parseJwt(refreshToken);
+
     date.setUTCSeconds(decoded.exp);
-    refreshDate.setUTCDate(refreshDecoded.exp);
+    refreshDate.setUTCSeconds(refreshDecoded.exp);
 
     if (date.valueOf() - 30*1000 < new Date().valueOf()) {
-                if (refreshDate.valueOf() - 60*1000 < new Date().valueOf()){
 
-            document.location = 'http://localhost:8080/loginPublic'
+        if (refreshDate.valueOf() - 60*1000 < new Date().valueOf()){
+            document.location = 'http://localhost:8080/loginPublic';
+            return ;
         }
+
         callRefreshToken();
+        return true;
+    }
+    }else {
+        document.location = 'http://localhost:8080/loginPublic'
     }
 }
 
@@ -42,9 +52,6 @@ function callRefreshToken() {
 
 function getAnotherPage(req) {
 
-    if ($.cookie('access_token') != null){
-
-        checkExpire();
         fetch(req).then(function (response) {
 // The API call was successful!
             if(response.status === 403){
@@ -53,29 +60,25 @@ function getAnotherPage(req) {
             return response.text();
         }).then(function (html) {
 // This is the HTML from our response as a text string
+/*
             $("#Content").html(html);
+*/
+            $('body').append(html);
         }).catch(function (err) {
 // There was an error
             console.log('Something went wrong.', err);
-            checkExpire();
         });
-
-    }else {
-        document.location = 'http://localhost:8080/loginPublic'
-    }
 
 }
 
 function postAnotherPage(req) {
 
-    if ($.cookie('access_token') != null){
-
-        checkExpire();
         fetch(req).then(function (response) {
 // The API call was successful!
             if(response.status === 403){
                 throw err;
             }
+            location.reload();
             return response.text();
         }).catch(function (err) {
 // There was an error
@@ -83,9 +86,5 @@ function postAnotherPage(req) {
             document.location = 'http://localhost:8080/loginPublic'
 
         });
-
-    }else {
-        document.location = 'http://localhost:8080/loginPublic'
-    }
 
 }

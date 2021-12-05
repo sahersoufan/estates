@@ -24,22 +24,6 @@ public class TemplatesController {
         return "user.html";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/admin")
-    public String adminPage(){
-        return "admin.html";
-    }
-
-
-    @RequestMapping(method = RequestMethod.GET, value = "/admin/content")
-    public String adminContentPage(){
-        return "adminContent.html";
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/admin/register")
-    public String adminRegisterPage(){
-        return "registration4Admin.html";
-    }
-
 
 
 }
