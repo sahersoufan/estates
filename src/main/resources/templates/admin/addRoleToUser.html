@@ -2,8 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>admin</title>
-
+    <title>Add Role To User</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
     <script type="text/javascript" th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
@@ -12,18 +11,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha512-aUhL2xOCrpLEuGD5f6tgHbLYEXRpYZ8G5yD+WlFrXrPy2IrWBlu6bih5C9H6qGsgqnU6mgx6KtU8TreHpASprw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </head>
-
 <body>
-<div id="Content"></div>
+
 </body>
 </html>
 
 <script>
-window.onload = function () {
+    window.onload = function () {
 
-    getAnotherPage(new Request(
-        'http://localhost:8080/admin/register',
-        {method:'GET'}
-    ));
-}
+        if (!checkExpire()){
+            getAnotherPage(new Request(
+                'http://localhost:8080/admin/addroletouser/content',
+                {method:'GET'}
+            ));
+        }else {
+            location.reload();
+        }
+
+    }
 </script>

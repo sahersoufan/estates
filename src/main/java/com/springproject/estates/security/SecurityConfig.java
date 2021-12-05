@@ -3,6 +3,7 @@ package com.springproject.estates.security;
 import com.springproject.estates.filter.CustomAuthenticationFilter;
 import com.springproject.estates.filter.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ import java.io.IOException;
 
 
 @Configuration @EnableWebSecurity @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -43,23 +45,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers(
+
+        http.authorizeRequests().antMatchers( HttpMethod.POST,
                 "/login/**",
+                "/api/user/save"
+                ).permitAll();
+
+        http.authorizeRequests().antMatchers(HttpMethod.GET,
                 "/",
-                "/api/token/refresh",
                 "/loginPublic/**",
+                "/api/token/refresh/**",
                 "/admin",
-                "/api/user/save",
+                "/css/**",
                 "/user",
                 "/webjars/**",
-                "/js/**",
-                "/css/**").permitAll();
+                "/js/**").permitAll();
+
         http.authorizeRequests().antMatchers(
                 HttpMethod.GET,"/api/user/**").hasAnyAuthority("ROLE_USER");
+
         http.authorizeRequests().antMatchers(
                 "/api/user/save/**",
-                 "/admin/content",
-                "/admin/register").hasAnyAuthority("ROLE_ADMIN");
+                "/api/role/addtouser",
+                 "/admin/home/content",
+                 "/admin/addroletouser/content",
+                "/admin/register/content"
+        ).hasAnyAuthority("ROLE_ADMIN");
 
         http.authorizeRequests().anyRequest().authenticated().and().formLogin().loginPage("/loginPublic").permitAll();
         http.addFilter(customAuthenticationFilter);
