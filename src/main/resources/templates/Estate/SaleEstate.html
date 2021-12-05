@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+<link href="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet"/>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+
+<div class="sl-mainpanel" >
+
+
+    <div class="sl-pagebody">
+  <br>  <br>  <br>
+        <div class="card pd-20 pd-sm-40">
+            <h6 class="card-body-title">Estate Sales
+                 </h6>
+
+
+            <div class="row">
+                <div class="col-md-5"  id='myform' style="margin-left: 280px; margin-bottom: 30px; margin-top: 30px; ">
+
+                    <div class="form-group mg-b-10-force">
+                    <label class="form-control-label">Estate: <span class="tx-danger">*</span></label>
+                    <select class="form-control  select2" id="selectvalue" name="selectname" >
+
+
+                        <option value="0">Selected Your Choise</option>
+                       <option th:each="i: ${estate}" th:value="${i.getId()}" th:text="${i.getName()}" ></option>
+
+
+                    </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('.select2').select2();
+        </script>
+        <script type='text/javascript'>
+            $(document).ready(function(){
+                $('select[name="selectname"]').on('change',function(){
+                    var id = $(this).val();
+                    $.ajax({
+                        url: "/edit/sale/"+id,
+                        type:"GET",
+                        success:function() {
+
+                            window.location.href = "/edit/sale/"+id;
+                        },
+                    });
+
+                    $("#selectvalue").val("0")
+                        .find("option[value=0]").attr('selected', true);
+
+                });
+            });
+
+
+
+        </script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script th:inline="javascript">
+
+            /*<![CDATA[*/
+
+
+
+            if([[${message}]]){
+
+            var type =[[${alert_type}]];
+
+            switch(type){
+                case 'info':
+                    toastr.info([[${message}]]);
+                    break;
+                case 'success':
+                    toastr.success([[${message}]]);
+                    break;
+                case 'warning':
+                    toastr.warning([[${message}]]);
+                    break;
+                case 'error':
+                    toastr.error([[${message}]]);
+                    break;
+
+
+            }}
+            /*]]>*/
+        </script>
+    </div>
+</div>
+</body>
+</html>

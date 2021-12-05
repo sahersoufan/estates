@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+<div class="sl-mainpanel">
+
+
+    <div class="sl-pagebody">
+        <div class="sl-page-title">
+            <h5>Estate Update</h5>
+
+        </div><!-- sl-page-title -->
+
+        <div class="card pd-20 pd-sm-40">
+
+
+
+            <form   th:action="@{/update/estate/{id}(id=${estate.getId()})}"  method="post">
+
+                <div class="modal-body pd-20">
+                    <div class="form-group">
+                        <label >Estate Name</label>
+                        <input type="text" class="form-control" id="name"   name="name" th:value="${estate.getName()}">
+
+                    </div>
+                    <div class="form-group">
+                        <label >Estate Price</label>
+                        <input type="text" class="form-control" id="price" name="price" th:value="${estate.getPrice()}">
+
+                    </div>
+                    <div class="form-group">
+                        <label >Number of Shares</label>
+                        <input type="number"  id="number_shares" name="number_shares" th:value="${estate.getNumberShares()}">
+
+                    </div>
+
+
+
+
+                </div><!-- modal-body -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info pd-x-20">Update</button>
+                </div>
+            </form>
+
+
+
+
+        </div><!-- card -->
+
+
+
+
+    </div><!-- sl-mainpanel -->
+</div>
+
+</body>
+</html>
