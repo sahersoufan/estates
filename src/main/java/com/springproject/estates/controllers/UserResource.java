@@ -1,34 +1,19 @@
-package com.springproject.estates.api;
+package com.springproject.estates.controllers;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.springproject.estates.domain.Role;
+
 import com.springproject.estates.domain.User;
+import com.springproject.estates.services.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.config.RepositoryNameSpaceHandler;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
-import com.springproject.estates.services.UserService;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.URI;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.Arrays.stream;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -62,18 +47,20 @@ public class UserResource {
         return ResponseEntity.ok().build();
     }
 
+
+/*
     @GetMapping("/token/refresh")
     public void refreshToke(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Cookie[] authCookie = request.getCookies();
-        final String[] access_token_cookie = new String[1];
+        final String[] token_cookie = new String[1];
         stream(authCookie).forEach(cookie -> {
             if (cookie.getName().equals("refresh_token")){
-                access_token_cookie[0] = cookie.getValue();
+                token_cookie[0] = cookie.getValue();
             }
         });
-        if (access_token_cookie[0] != null){
+        if (token_cookie[0] != null){
             try {
-                String refresh_token = access_token_cookie[0];
+                String refresh_token = token_cookie[0];
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
@@ -102,7 +89,7 @@ public class UserResource {
             throw new RuntimeException("Refresh token is missing");
 
         }
-    }
+    }*/
 }
 
 @Data

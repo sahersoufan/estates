@@ -24,7 +24,7 @@ public class EstatesApplication {
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-    @Bean
+  /*  @Bean
     CommandLineRunner run(UserService userService){
         return args -> {
             userService.saveRole(new Role(null,"ROLE_USER"));
@@ -38,5 +38,5 @@ public class EstatesApplication {
             userService.addRoleToUser("marta", "ROLE_USER");
             userService.addRoleToUser("sali", "ROLE_ADMIN");
         };
-    }
+    }*/
 }
