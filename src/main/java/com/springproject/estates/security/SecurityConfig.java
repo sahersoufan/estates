@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers( HttpMethod.POST,
                 "/login/**",
+                "/save/user",
                 "/api/user/save"
                 ).permitAll();
 
@@ -55,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/loginPublic/**",
                 "/api/token/refresh/**",
                 "/admin",
+                "/register",
                 "/estate/**",
                 "/add/estate",
                 "/css/**",
