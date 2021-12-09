@@ -62,9 +62,10 @@
         fetch(myRequest).then(function (response) {
             return response.json();
         }).then(function (json) {
+
             $.cookie('access_token', json.access_token, {path:'/'});
             $.cookie('refresh_token', json.refresh_token, {path:'/'});
-            document.location = 'http://localhost:8080/'
+            document.location = 'http://localhost:8080/estate'
 
             /*localStorage.setItem('access_token',json.access_token);
               localStorage.setItem('refresh_token',json.refresh_token);*/

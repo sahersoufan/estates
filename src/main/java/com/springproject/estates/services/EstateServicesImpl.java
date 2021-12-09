@@ -3,6 +3,7 @@ package com.springproject.estates.services;
 
 import com.springproject.estates.domain.EstateModel;
 import com.springproject.estates.repository.EstateRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service @Slf4j
 public class EstateServicesImpl implements EstateServices{
 
     @Autowired
@@ -23,16 +24,19 @@ public class EstateServicesImpl implements EstateServices{
 
     @Override
     public EstateModel SaveEstate(EstateModel estates) {
+
        return estateRepository.save(estates);
     }
 
     @Override
     public void DeletEstate(long id) {
+       // log.info("delete estate {}",estateRepository.findById(id).get().getName() );
         estateRepository.deleteById(id);
     }
 
     @Override
     public EstateModel FindEstate(long id) {
+        log.info("find estate {}",estateRepository.findById(id).get().getName() );
         Optional<EstateModel> estateModel=estateRepository.findById(id);
         EstateModel estatefind = null;
        if(estateModel.isEmpty())
@@ -45,6 +49,7 @@ public class EstateServicesImpl implements EstateServices{
     @Override
     public List<EstateModel> EstateIsntSale() {
 
+        log.info("find estate dosent sale " );
         return estateRepository.findAllBySale(false);
     }
 }

@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.config.RepositoryNameSpaceHandler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.springproject.estates.services.UserService;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,7 +32,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserResource {
@@ -63,7 +64,9 @@ public class UserResource {
     }
 
     @GetMapping("/token/refresh")
-    public void refreshToke(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String refreshToke(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String url= (String) request.getAttribute("url");
+
         Cookie[] authCookie = request.getCookies();
         final String[] access_token_cookie = new String[1];
         stream(authCookie).forEach(cookie -> {
@@ -81,26 +84,26 @@ public class UserResource {
                 User user = userService.getUser(username);
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 1000))
+                        .withExpiresAt(new Date(System.currentTimeMillis() +15* 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .sign(algorithm);
                 Map<String, String> tokens = new HashMap<>();
                 tokens.put("access_token", access_token);
                 tokens.put("refresh_token", refresh_token);
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+                Cookie myCookie1 =  new Cookie("access_token", access_token);
+                Cookie myCookie2 =  new Cookie("refresh_token", refresh_token);
+                myCookie1.setPath("/");
+                myCookie2.setPath("/");
+                response.addCookie(myCookie1);
+                response.addCookie(myCookie2);
+
+                return "redirect:"+url;
             }catch (Exception e){
-                response.setHeader("error", e.getMessage());
-                response.setStatus(FORBIDDEN.value());
-                Map<String,String> error = new HashMap<>();
-                error.put("error_message", e.getMessage()) ;
-            response.setContentType(APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), error);
+                return "redirect:/loginPublic";
             }
         }else{
-            throw new RuntimeException("Refresh token is missing");
-
+            return "redirect:/loginPublic";
         }
     }
 }

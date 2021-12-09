@@ -31,12 +31,11 @@ import java.io.IOException;
 @Configuration @EnableWebSecurity @RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserDetailsService userDetailsService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
+       super.configure(auth);
     }
 
     @Override
@@ -56,7 +55,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/loginPublic/**",
                 "/api/token/refresh/**",
                 "/admin",
+                "/estate/**",
+                "/add/estate",
                 "/css/**",
+                "/lib/**",
+                "/styles/**",
+                "/plugins/**",
+                "/img/**",
+                "/lib/**",
+                "/scss/**",
                 "/user",
                 "/webjars/**",
                 "/js/**").permitAll();
@@ -78,12 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-/*        http.formLogin().successHandler(new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                //do nothing
-            }
-        });*/
+
 
     }
 

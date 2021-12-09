@@ -24,6 +24,12 @@ public class EstateModel {
     @Version
     private Long version;
 
+
+
+    @OneToOne
+    @JoinColumn(name = "tracing")
+    Tracing tracing;
+
     public EstateModel(){
 
     }
@@ -95,6 +101,13 @@ public class EstateModel {
 
     public void setSellingPrice(long sellingPrice) {
         this.sellingPrice = sellingPrice;
+    }
+    public Tracing getTracing() {
+        return tracing;
+    }
+
+    public void setTracing(Tracing tracing) {
+        this.tracing = tracing;
     }
 
 

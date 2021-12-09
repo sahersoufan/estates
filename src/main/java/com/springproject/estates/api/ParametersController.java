@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class ParametersController {
     @Autowired
     ParametersServices parametersServices;
+
     @GetMapping(value = "/parameter")
     public String viewEstatePage(Model model){
 
@@ -40,13 +41,11 @@ public class ParametersController {
         model.addAttribute("parameter", parametersServices.FindParameter(id));
         return "Parameter/EditParameter";
     }
-    @RequestMapping(value = "/update/parameter/{id}", method= RequestMethod.POST)
+    @RequestMapping(value = "update/parameter/{id}", method= RequestMethod.POST)
     public String UpdateEstate(@PathVariable("id") Long id,@ModelAttribute Parameters parameters, @RequestParam("value") Long value) {
 
         Parameters parametersModel=parametersServices.FindParameter(id);
         parametersModel.setvalue(value);
-        parametersModel.setName(parameters.getName());
-
         parametersServices.SaveParameter(parametersModel);
         return "redirect:/parameter";
     }

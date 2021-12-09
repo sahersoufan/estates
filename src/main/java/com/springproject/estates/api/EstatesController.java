@@ -4,46 +4,81 @@ package com.springproject.estates.api;
 
 
 import com.springproject.estates.domain.EstateModel;
-import com.springproject.estates.services.EstateServices;
-import com.springproject.estates.services.ParametersServices;
+import com.springproject.estates.domain.Tracing;
+import com.springproject.estates.domain.User;
+import com.springproject.estates.security.ExpiredToken;
+import com.springproject.estates.services.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+import java.sql.Date;
+
+import static java.util.Arrays.stream;
+
+@Controller @Slf4j
 public class EstatesController {
 
     @Autowired
     private EstateServices estateServices;
     @Autowired
     private ParametersServices parametersServices;
+    @Autowired
+    private TracingServices  tracingServices;
+    @Autowired
+    private UserService userService;
 
 
 
     @GetMapping(value = "/estate")
     public String viewEstatePage(Model model){
 
+
         model.addAttribute("estates",estateServices.getAllEstate());
+        if(parametersServices.findbyname("number_shares")!=null)
         model.addAttribute("numbershares",parametersServices.findbyname("number_shares").getvalue());
 
         return "Estate/estate";
     }
 
     @RequestMapping(value = "/add/estate", method= RequestMethod.POST)
-    public String AddEstate(@ModelAttribute EstateModel estates, @RequestParam("number_shares") Long numbershares) {
+    public String AddEstate(@ModelAttribute EstateModel estates, @RequestParam("number_shares") Long numbershares, HttpServletRequest request,@ModelAttribute Tracing tracing) {
 
-        estates.setNumberShares(numbershares);
-        estates.setSale(false);
-        estateServices.SaveEstate(estates);
+
+        if( userService.getUser(request)!= null){
+
+            //add tracing
+            tracing.setUser_add(userService.getUser(request) );
+            tracing.setAdd_date(new Date(System.currentTimeMillis()));
+            tracingServices.save(tracing);
+
+            //add estate
+            estates.setNumberShares(numbershares);
+            estates.setSale(false);
+            estates.setTracing(tracing);
+            estateServices.SaveEstate(estates);
+
+            log.info("saving new estate {} to the database : {}",estates.getName(),tracing.getUser_add().getUsername() );
+            log.info("saving new tracing {} to the database :{}",tracing,tracing.getUser_add().getUsername());
+
+        }
         return "redirect:/estate";
     }
 
     @GetMapping(value = "/delete/estate/{id}")
-    public String DeletEstate(@PathVariable("id") Long id){
-        estateServices.DeletEstate(id);
+    public String DeletEstate(@PathVariable("id") Long id,HttpServletRequest request){
+
+        User user=userService.getUser(request);
+        if(user!=null) {
+            log.info("delete estate {} :{}", estateServices.FindEstate(id).getName(), user.getUsername());
+            estateServices.DeletEstate(id);
+        }
         return "redirect:/estate";
     }
 
@@ -54,13 +89,32 @@ public class EstatesController {
     }
 
     @RequestMapping(value = "/update/estate/{id}", method= RequestMethod.POST)
-    public String UpdateEstate(@PathVariable("id") Long id,@ModelAttribute EstateModel estates, @RequestParam("number_shares") Long numbershares) {
+    public String UpdateEstate(@PathVariable("id") Long id,@ModelAttribute EstateModel estates, @RequestParam("number_shares") Long numbershares,HttpServletRequest request) {
 
-        EstateModel estateModel=estateServices.FindEstate(id);
-        estateModel.setNumberShares(numbershares);
-        estateModel.setName(estates.getName());
-        estateModel.setPrice(estates.getPrice());
-        estateServices.SaveEstate(estateModel);
+
+
+        if( userService.getUser(request)!= null) {
+
+            EstateModel estateModel=estateServices.FindEstate(id);
+            Tracing tracingedit=estateModel.getTracing();
+            log.info("update  tracing {} to the database",tracingedit);
+
+
+            //edit tracing
+            tracingedit.setUser_edit(userService.getUser(request));
+            tracingedit.setEdit_date(new Date(System.currentTimeMillis()));
+            tracingServices.save(tracingedit);
+
+
+            //edit estate
+            estateModel.setNumberShares(numbershares);
+            estateModel.setName(estates.getName());
+            estateModel.setPrice(estates.getPrice());
+            estateServices.SaveEstate(estateModel);
+
+            log.info("update  estate {} to the database :{}",estates.getName(),tracingedit.getUser_add().getUsername() );
+        }
+
         return "redirect:/estate";
     }
 
@@ -101,6 +155,22 @@ public class EstatesController {
 
 
         return "redirect:/sale/"+message+"/"+alert_type;
+    }
+
+    @GetMapping(value = "/show/estate/{id}")
+    public String showestate(Model model ,@PathVariable("id") Long id){
+
+        EstateModel estateModel=estateServices.FindEstate(id);
+        Tracing tracingedit=estateModel.getTracing();
+
+        model.addAttribute("estate",estateModel);
+        model.addAttribute("tracing",tracingedit);
+        model.addAttribute("user_add",tracingedit.getUser_add().getUsername());
+        if(tracingedit.getUser_edit()!=null)
+        model.addAttribute("user_edit",tracingedit.getUser_edit().getUsername());
+
+
+        return "Estate/show";
     }
 
 }

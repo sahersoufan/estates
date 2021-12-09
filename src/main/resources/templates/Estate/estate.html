@@ -31,6 +31,7 @@
                         <th class="wd-15p">Name</th>
                         <th class="wd-15p">Price</th>
                         <th class="wd-15p">Number of Shares</th>
+
                         <th class="wd-20p">Action</th>
 
                     </tr>
@@ -43,9 +44,12 @@
                         <td th:text="${estate.getName()}" />
                         <td th:text="${estate.getPrice()}" />
                         <td th:text="${estate.getNumberShares()}" />
+
                         <td>
-                            <a th:href="@{/edit/estate/{id}(id=${estate.getId()})}" class="btn btn-sm btn-info">Edit</a>
-                            <a th:href="@{/delete/estate/{id}(id=${estate.getId()})}" class="btn btn-sm btn-danger" id="delete">Delete</a>
+                            <a th:href="@{/show/estate/{id}(id=${estate.getId()})}" class="btn btn-sm btn-warning" title="show"><i class="fa fa-eye"></i></a>
+                            <a th:href="@{/edit/estate/{id}(id=${estate.getId()})}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
+                            <a th:href="@{/delete/estate/{id}(id=${estate.getId()})}" class="btn btn-sm btn-danger" id="delete"><i class="fa fa-trash"></i></a>
+
                         </td>
 
 

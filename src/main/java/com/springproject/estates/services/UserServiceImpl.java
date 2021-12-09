@@ -1,6 +1,10 @@
 package com.springproject.estates.services;
 
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.springproject.estates.domain.Role;
 import com.springproject.estates.domain.User;
 import com.springproject.estates.repository.RoleRepo;
@@ -14,10 +18,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
 
 @Service @RequiredArgsConstructor @Transactional @Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -70,6 +77,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("fetching user {}", username);
 
         return userRepo.findByUsername(username);
+    }
+
+    @Override
+    public User getUser(HttpServletRequest request) {
+        String url= (String) request.getAttribute("url");
+
+        Cookie[] authCookie = request.getCookies();
+        final String[] access_token_cookie = new String[1];
+        stream(authCookie).forEach(cookie -> {
+            if (cookie.getName().equals("access_token")){
+                access_token_cookie[0] = cookie.getValue();
+            }
+        });
+        if(access_token_cookie[0]!=null){
+            try {
+                String refresh_token = access_token_cookie[0];
+                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                JWTVerifier verifier = JWT.require(algorithm).build();
+                DecodedJWT decodedJWT = verifier.verify(refresh_token);
+                String username = decodedJWT.getSubject();
+
+
+                return userRepo.findByUsername(username);
+            }catch (Exception e){
+                return null ;
+            }
+        }else{
+            return null;
+        }
+
     }
 
     @Override

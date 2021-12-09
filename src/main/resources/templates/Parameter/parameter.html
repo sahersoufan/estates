@@ -43,8 +43,8 @@
                             <td th:text="${parameter.getvalue()}" />
 
                             <td>
-                                <a th:href="@{/edit/parameter/{id}(id=${parameter.getId()})}" class="btn btn-sm btn-info">Edit</a>
-                                <a th:href="@{/delete/parameter/{id}(id=${parameter.getId()})}" class="btn btn-sm btn-danger" id="delete">Delete</a>
+                                <a th:href="@{edit/parameter/{id}(id=${parameter.getId()})}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
+                                <a th:href="@{delete/parameter/{id}(id=${parameter.getId()})}" class="btn btn-sm btn-danger" id="delete"><i class="fa fa-trash"></i></a>
                             </td>
 
 
