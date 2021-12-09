@@ -55,7 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/",
                 "/loginPublic/**",
                 "/api/token/refresh/**",
-                "/admin",
                 "/register",
                 "/estate/**",
                 "/add/estate",
@@ -77,10 +76,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(
                 "/api/user/save/**",
-                "/api/role/addtouser",
-                 "/admin/home/content",
-                 "/admin/addroletouser/content",
-                "/admin/register/content"
+                "/api/role/addtouser"
+
         ).hasAnyAuthority("ROLE_ADMIN");
 
         http.authorizeRequests().anyRequest().authenticated().and().formLogin().loginPage("/loginPublic").permitAll();

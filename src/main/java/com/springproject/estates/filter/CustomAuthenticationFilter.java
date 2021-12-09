@@ -52,24 +52,30 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 15 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles",user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() +2* 60 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 2 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
-        response.setHeader("access_token",access_token);
-        response.setHeader("refresh_token",refresh_token);
+        Cookie access = new Cookie("access_token",access_token);
+        access.setHttpOnly(true);
+        access.setSecure(true);
+        access.setPath("/");
+        response.addCookie(access);
+        Cookie refresh = new Cookie("refresh_token",refresh_token);
+        refresh.setHttpOnly(true);
+        refresh.setSecure(true);
+        refresh.setPath("/");
+        response.addCookie(refresh);
 
-        Map<String,String> token = new HashMap<>();
-        token.put("access_token",access_token);
-        token.put("refresh_token",refresh_token);
-        response.setContentType(APPLICATION_JSON_VALUE);
+        Map<String,Boolean> token = new HashMap<>();
+        token.put("succ",true);
 
         new ObjectMapper().writeValue(response.getOutputStream(), token);
     }

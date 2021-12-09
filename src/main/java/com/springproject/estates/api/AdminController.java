@@ -16,31 +16,17 @@ public class AdminController {
         return "admin/home.html";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/home/content")
-    public String homeContentPage(){
-        return "admin/homeContent.html";
-    }
-
-
     @RequestMapping(method = RequestMethod.GET, value = "/register")
     public String RegisterPage(){
         return "admin/registration.html";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/register/content")
-    public String RegistercontentPage(){
-        return "admin/registerContent.html";
-    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/addroletouser")
     public String addRoleToUserPage(){
         return "admin/addRoleToUser.html";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/addroletouser/content")
-    public String ARTUContentPage(){
-        return "admin/ARTUContent.html";
-    }
 
 
 }

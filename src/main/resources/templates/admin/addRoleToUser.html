@@ -7,24 +7,63 @@
     <script type="text/javascript" th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/jwtHandler.js}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha512-aUhL2xOCrpLEuGD5f6tgHbLYEXRpYZ8G5yD+WlFrXrPy2IrWBlu6bih5C9H6qGsgqnU6mgx6KtU8TreHpASprw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </head>
 <body>
+<div>
 
+    <form id="form"
+          method="post" style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label" for="username">username: </label>
+                <div class="col-8">
+                    <input id="username" type="text" class="form-control"
+                           required minlength="2" maxlength="20"/>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label" for="role">Role: </label>
+                <div class="col-8">
+                    <select id="role" class="form-control">
+                        <option value="ROLE_USER">User</option>
+                        <option value="ROLE_ADMIN">Admin</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+
+        </div>
+    </form>
+
+
+
+    <script>
+        const myForm = document.getElementById("form");
+        myForm.addEventListener('submit',function (e) {
+            e.preventDefault();
+            const myHeaders = new Headers();
+            myHeaders.append('Content-Type', 'application/json');
+            myHeaders.append('accept', 'application/json');
+
+            const roleToUser = {
+                "username": document.getElementById('username').value,
+                "roleName": document.getElementById('role').value
+            }
+
+            const myRoleRequest = new Request(
+                'http://localhost:8080/api/role/addtouser',
+                {method: 'POST', headers: myHeaders, body: JSON.stringify(roleToUser)}
+            )
+            postAnotherPage(myRoleRequest);
+        })
+    </script>
+
+</div>
 </body>
 </html>
-
-<script>
-    window.onload = function () {
-
-        if (!checkExpire()){
-            getAnotherPage(new Request(
-                'http://localhost:8080/admin/addroletouser/content',
-                {method:'GET'}
-            ));
-        }
-
-    }
-</script>

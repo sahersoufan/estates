@@ -6,7 +6,6 @@ package com.springproject.estates.api;
 import com.springproject.estates.domain.EstateModel;
 import com.springproject.estates.domain.Tracing;
 import com.springproject.estates.domain.User;
-import com.springproject.estates.security.ExpiredToken;
 import com.springproject.estates.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

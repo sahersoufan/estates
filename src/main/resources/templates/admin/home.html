@@ -7,26 +7,20 @@
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
     <script type="text/javascript" th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/jwtHandler.js}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha512-aUhL2xOCrpLEuGD5f6tgHbLYEXRpYZ8G5yD+WlFrXrPy2IrWBlu6bih5C9H6qGsgqnU6mgx6KtU8TreHpASprw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </head>
 
 <body>
+<div>
+
+    <a href="http://localhost:8080/admin/register">
+        <button id="register" name="redister">new user</button>
+    </a>
+    <a href="http://localhost:8080/admin/addroletouser">
+        <button id="ARTU" name="ARTU">Add Role To User</button>
+    </a>
+    <p>bla bla bla</p>
+</div>
 
 </body>
 </html>
-
-<script>
-window.onload = function () {
-
-    if (!checkExpire()){
-        getAnotherPage(new Request(
-            'http://localhost:8080/admin/home/content',
-            {method:'GET'}
-        ));
-    }
-
-}
-</script>

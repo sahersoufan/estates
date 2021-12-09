@@ -32,7 +32,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserResource {
@@ -63,49 +63,6 @@ public class UserResource {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/token/refresh")
-    public String refreshToke(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String url= (String) request.getAttribute("url");
-
-        Cookie[] authCookie = request.getCookies();
-        final String[] access_token_cookie = new String[1];
-        stream(authCookie).forEach(cookie -> {
-            if (cookie.getName().equals("refresh_token")){
-                access_token_cookie[0] = cookie.getValue();
-            }
-        });
-        if (access_token_cookie[0] != null){
-            try {
-                String refresh_token = access_token_cookie[0];
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-                JWTVerifier verifier = JWT.require(algorithm).build();
-                DecodedJWT decodedJWT = verifier.verify(refresh_token);
-                String username = decodedJWT.getSubject();
-                User user = userService.getUser(username);
-                String access_token = JWT.create()
-                        .withSubject(user.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() +15* 60 * 1000))
-                        .withIssuer(request.getRequestURL().toString())
-                        .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
-                        .sign(algorithm);
-                Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", access_token);
-                tokens.put("refresh_token", refresh_token);
-                Cookie myCookie1 =  new Cookie("access_token", access_token);
-                Cookie myCookie2 =  new Cookie("refresh_token", refresh_token);
-                myCookie1.setPath("/");
-                myCookie2.setPath("/");
-                response.addCookie(myCookie1);
-                response.addCookie(myCookie2);
-
-                return "redirect:"+url;
-            }catch (Exception e){
-                return "redirect:/loginPublic";
-            }
-        }else{
-            return "redirect:/loginPublic";
-        }
-    }
 }
 
 @Data
