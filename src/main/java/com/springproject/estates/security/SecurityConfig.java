@@ -68,8 +68,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/webjars/**",
                 "/js/**").permitAll();
 
-        http.authorizeRequests().antMatchers(
-                HttpMethod.GET,"/api/user/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers( HttpMethod.GET,
+                "/api/user/**",
+                "/estate"
+        ).hasAnyAuthority("ROLE_USER");
 
         http.authorizeRequests().antMatchers(
                 "/api/user/save/**",

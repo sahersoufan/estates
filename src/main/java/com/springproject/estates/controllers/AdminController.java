@@ -1,4 +1,4 @@
-package com.springproject.estates.api;
+package com.springproject.estates.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
