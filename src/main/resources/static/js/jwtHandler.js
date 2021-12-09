@@ -22,7 +22,7 @@ function checkExpire() {
 
         if (!json.res){
             document.location = 'http://localhost:8080/loginPublic'
-            return false;
+            return true;
         }
         if (json.res && json.reload){
             location.reload();
