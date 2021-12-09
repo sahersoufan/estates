@@ -157,7 +157,5 @@
             </plugin>
         </plugins>
     </build>
-<!--    <logger name="org.springframework.boot.autoconfigure.logging">
-        <level value="INFO"/>
-    </logger>-->
+
 </project>
