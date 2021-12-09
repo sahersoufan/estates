@@ -6,7 +6,9 @@
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
     <script type="text/javascript" th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/jwtHandler.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha512-aUhL2xOCrpLEuGD5f6tgHbLYEXRpYZ8G5yD+WlFrXrPy2IrWBlu6bih5C9H6qGsgqnU6mgx6KtU8TreHpASprw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 <body>
 <div class="container text-center">
@@ -14,7 +16,7 @@
         <h1>Sign In</h1>
     </div>
     <form id="form"
-         style="max-width: 600px; margin: 0 auto;">
+          style="max-width: 600px; margin: 0 auto;">
         <div class="m-3">
             <div class="form-group row">
                 <label class="col-4 col-form-label">username: </label>
@@ -57,10 +59,6 @@
                 headers:myHeaders,
                 body:formData}
         )
-
-       login(myRequest);
-/*
-
         fetch(myRequest).then(function (response) {
             return response.json();
         }).then(function (json) {
@@ -69,16 +67,15 @@
             $.cookie('refresh_token', json.refresh_token, {path:'/'});
             document.location = 'http://localhost:8080/estate'
 
-            /!*localStorage.setItem('access_token',json.access_token);
-              localStorage.setItem('refresh_token',json.refresh_token);*!/
+            /*localStorage.setItem('access_token',json.access_token);
+              localStorage.setItem('refresh_token',json.refresh_token);*/
         }).catch(function (error) {
             console.error(error);
 
         })
 
     });
- */
-    });
+
 
 
 </script>
